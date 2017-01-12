@@ -118,10 +118,10 @@ running = True  # 初始化运行状态
 while running:  # 开始游戏循环
     clock.tick(60)  # 设置游戏帧率为60
     if not player.is_hit:  # 判断玩家的飞机是否被击
-        if shoot_frequency % 15 == 0:  # 设置连续射击
+        if shoot_frequency % 15 == 0:  # 设置连续射击,因为每秒60帧，15/60=0.25秒发一次子弹
             player.shoot(bullet_img)
         shoot_frequency += 1
-        if shoot_frequency >= 15:
+        if shoot_frequency >= 15:  # 当设置的射击频率大于15，置零
             shoot_frequency = 0
 
     if enemy_frequency % 50 == 0:  # 控制生成敌机的频率
@@ -165,11 +165,11 @@ while running:  # 开始游戏循环
     for enemy_down in enemies_down:  # 敌机被子弹击中的效果显示
         if enemy_down.down_index == 0:
             pass
-        if enemy_down.down_index > 7:
+        if enemy_down.down_index > 7:  # 因为敌机被毁图片的数量
             enemies_down.remove(enemy_down)
             score += 1000  # 分数的实现
             continue
-        screen.blit(enemy_down.down_imgs[int(enemy_down.down_index / 2)], enemy_down.rect)  # 显示图片
+        screen.blit(enemy_down.down_imgs[int(enemy_down.down_index / 2)], enemy_down.rect)  # 敌机被击时显示图片
         enemy_down.down_index += 1
     player.bullets.draw(screen)  # 显示子弹
     enemies1.draw(screen)  # 显示敌机
@@ -205,8 +205,8 @@ screen.blit(game_over, (0, 0))  # 显示游戏结束画面
 screen.blit(text, text_rect)  # 显示分数
 
 while 1:
-    for event in pygame.event.get():
+    for event in pygame.event.get():  # 根据pygame来获取事件
         if event.type == pygame.QUIT:
             pygame.quit()
             exit()
-    pygame.display.update()
+    pygame.display.update()  # 刷新屏幕
